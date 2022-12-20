@@ -91,7 +91,7 @@ func (m *Mandelbrot) Init(window *window.Window) {
 	m.startTime = time.Now()
 }
 
-func (m *Mandelbrot) Step(delta time.Duration) {
+func (m *Mandelbrot) Step(u window.UpdatesInfo) {
 	xRes, yRes := m.window.GetSize()
 	mandelbrotPeriod := 30.0
 
@@ -119,8 +119,7 @@ func (m *Mandelbrot) Step(delta time.Duration) {
 	center_x := -0.7457
 	center_y := 0.1127
 
-	currentTime := time.Now()
-	absoluteTime := currentTime.Sub(m.startTime).Seconds()
+	absoluteTime := u.Time_AbsoluteTime.Seconds()
 
 	t := math.Pow(math.Sin(math.Pi*(absoluteTime-mandelbrotPeriod/2.0)/mandelbrotPeriod), 4)
 

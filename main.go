@@ -31,16 +31,22 @@ func init() {
 func main() {
 	lastTime := time.Now()
 
-	window := window.NewWindow(X_RES, Y_RES, '#', output.NewStdOutput())
+	win := window.NewWindow(X_RES, Y_RES, '#', output.NewStdOutput())
+	win.Open()
+	defer win.Close()
+
 	app := mandelbrot.NewMandelbrotApp()
-	app.Init(window)
+	app.Init(win)
 
 	for true {
 		nextFrameTarget := lastTime.Add(sleepDuration)
 
-		window.ClearScreen()
-		app.Step(time.Millisecond * 1000)
-		window.Draw()
+		win.ClearScreen()
+		app.Step(window.UpdatesInfo{
+			Time_DeltaTime:    time.Now().Sub(lastTime),
+			Time_AbsoluteTime: time.Now().Sub(startTime),
+		})
+		win.Draw()
 
 		durationSleep := nextFrameTarget.Sub(time.Now())
 

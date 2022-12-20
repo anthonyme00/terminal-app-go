@@ -8,7 +8,7 @@ import (
 
 type Application interface {
 	Init(windowData *Window)
-	Step(delta time.Duration)
+	Step(u UpdatesInfo)
 }
 
 type Window struct {
@@ -17,6 +17,11 @@ type Window struct {
 	ySize      int
 	BorderChar byte
 	Output     output.Output
+}
+
+type UpdatesInfo struct {
+	Time_DeltaTime    time.Duration
+	Time_AbsoluteTime time.Duration
 }
 
 func NewWindow(x_size, y_size int, border byte, output output.Output) *Window {
@@ -78,4 +83,12 @@ func (w *Window) ClearScreen() {
 
 func (w *Window) Draw() {
 	w.Output.Write(w.screen)
+}
+
+func (w *Window) Open() {
+	w.Output.Open()
+}
+
+func (w *Window) Close() {
+	w.Output.Close()
 }
